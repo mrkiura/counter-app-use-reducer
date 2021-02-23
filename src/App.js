@@ -1,5 +1,15 @@
-import React, { createContext, useContext, useReducer } from 'react';
+import React, { useRef, useEffect, createContext, useContext, useReducer } from 'react';
 
+const useFlasher = () => {
+  const ref = useRef(null);
+  useEffect(() => {
+    ref.current.classList.add('flash');
+    setTimeout(() => {
+      ref.current.classList.remove('flash');
+    }, 300);
+  });
+  return ref
+};
 
 const initialState = {
   count1: 0,
@@ -43,7 +53,7 @@ const Counter = ({ name }) => {
   const [state, dispatch] = useGlobalState();
 
   return (
-    <div>
+    <div ref={useFlasher()}>
       {state[name]}
       <button onClick={() => dispatch({ type: 'INCREMENT', name})}>+1</button>
       <button onClick={() => dispatch({ type: 'DECREMENT', name})}>-1</button>
